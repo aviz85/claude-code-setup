@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>התקנת Claude Code — דרישות טכניות | AVIZ</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.7;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid #222;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .brand {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4a574, #c4956a);
+            color: #0a0a0a;
+            padding: 4px 16px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.85em;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            color: #d4a574;
+            font-size: 1.4em;
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        h3 {
+            color: #fff;
+            font-size: 1.1em;
+            margin: 24px 0 12px;
+        }
+
+        p, li {
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        ul, ol {
+            padding-right: 24px;
+            margin-bottom: 16px;
+        }
+
+        li { margin-bottom: 6px; }
+
+        .step {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -12px;
+            right: 16px;
+            background: #d4a574;
+            color: #0a0a0a;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85em;
+        }
+
+        .step h3 {
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        code {
+            background: #1a1a1a;
+            color: #d4a574;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.9em;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        pre {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        .highlight { color: #d4a574; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        th {
+            background: #151515;
+            color: #d4a574;
+            padding: 12px 16px;
+            text-align: right;
+            font-weight: 600;
+            border-bottom: 2px solid #222;
+        }
+
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        tr:hover td { background: #111; }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .tag-required {
+            background: #2a1a1a;
+            color: #e87070;
+            border: 1px solid #3a2020;
+        }
+
+        .tag-recommended {
+            background: #1a2a1a;
+            color: #70c870;
+            border: 1px solid #203a20;
+        }
+
+        .tag-optional {
+            background: #1a1a2a;
+            color: #7090e8;
+            border: 1px solid #202040;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 8px 12px;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist li::before {
+            content: "☐";
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 40px 0;
+        }
+
+        .no-need {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .no-need span { color: #888; }
+
+        a {
+            color: #d4a574;
+            text-decoration: none;
+        }
+
+        a:hover { text-decoration: underline; }
+
+        .link-btn {
+            display: inline-block;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #d4a574;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+
+        .link-btn:hover {
+            background: #222;
+            text-decoration: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid #1a1a1a;
+            color: #444;
+            font-size: 0.85em;
+        }
+
+        .tip {
+            background: #1a1a10;
+            border: 1px solid #333020;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            font-size: 0.9em;
+            color: #ccb870;
+        }
+
+        .tip::before {
+            content: "💡 ";
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px 16px; }
+            .header h1 { font-size: 1.5em; }
+            h2 { font-size: 1.2em; }
+            .step { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">AVIZ</div>
+            <h1>התקנת Claude Code</h1>
+            <p class="subtitle">דרישות טכניות והוראות התקנה</p>
+        </div>
+
+        <!-- Subscription -->
+        <h2>מנוי Claude</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>מנוי</th>
+                    <th>מחיר</th>
+                    <th>מתאים ל</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Pro</strong></td>
+                    <td>$20/חודש</td>
+                    <td>התנסות, שימוש קל</td>
+                </tr>
+                <tr>
+                    <td><strong>Max</strong> <span class="tag tag-recommended">מומלץ</span></td>
+                    <td>$100/חודש</td>
+                    <td>שימוש אינטנסיבי</td>
+                </tr>
+                <tr>
+                    <td><strong>API</strong></td>
+                    <td>לפי שימוש</td>
+                    <td>מפתחים, שימוש תכנותי</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>למה מומלץ Max?</h3>
+        <ul>
+            <li>יותר tokens (יכולת לעבד יותר מידע)</li>
+            <li>עדיפות בתור</li>
+            <li>גישה למודלים החדשים ביותר</li>
+            <li>שווה את זה אם עובדים ברצינות</li>
+        </ul>
+
+        <p>לרכישת מנוי: <a href="https://claude.ai/pricing" target="_blank">claude.ai/pricing</a></p>
+
+        <hr class="section-divider">
+
+        <!-- System Requirements -->
+        <h2>דרישות מחשב</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>מערכת הפעלה</th>
+                    <th>גרסה</th>
+                    <th>זיכרון</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mac <span class="tag tag-recommended">מומלץ</span></td>
+                    <td>macOS Monterey ומעלה</td>
+                    <td>8GB+</td>
+                </tr>
+                <tr>
+                    <td>Linux</td>
+                    <td>Ubuntu 20.04+</td>
+                    <td>8GB+</td>
+                </tr>
+                <tr>
+                    <td>Windows</td>
+                    <td>Windows 10 1809+</td>
+                    <td>4GB+</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="section-divider">
+
+        <!-- Installation -->
+        <h2>התקנה — Mac / Linux</h2>
+        <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+
+        <h2>התקנה — Windows (במשרד)</h2>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>מנוי Claude</h3>
+            <p>לבקש מהמנהל/IT ליצור מנוי ($20 Pro / $100 Max)</p>
+            <a class="link-btn" href="https://claude.ai/pricing" target="_blank">claude.ai/pricing →</a>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Git Bash</h3>
+            <p>להתקין Git for Windows (הגדרות ברירת מחדל)</p>
+            <a class="link-btn" href="https://git-scm.com/downloads/win" target="_blank">הורדת Git for Windows →</a>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Claude Code</h3>
+            <p>לפתוח PowerShell ולהריץ:</p>
+            <pre><code>irm https://claude.ai/install.ps1 | iex</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-number">4</div>
+            <h3>הוספה ל-PATH</h3>
+            <p>לוח בקרה → מערכת → מתקדם → משתני סביבה → <code>Path</code> → ערוך → הוסף:</p>
+            <pre><code>%USERPROFILE%\.local\bin</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-number">5</div>
+            <h3>הפעלה</h3>
+            <p>לסגור ולפתוח Git Bash מחדש (קליק ימני על תיקייה → Show more options → Open Git Bash here)</p>
+            <pre><code>claude</code></pre>
+            <p>ייפתח דפדפן להתחברות עם חשבון Claude.</p>
+        </div>
+
+        <h3>תמיכת עברית בטרמינל <span class="tag tag-recommended">מומלץ</span></h3>
+        <p>Windows Terminal 1.18 — גרסה עם תמיכת עברית תקינה (RTL):</p>
+        <a class="link-btn" href="https://win-terminal-hebrew-118.base44.app" target="_blank" style="margin-left: 8px;">מדריך התקנה →</a>
+        <a class="link-btn" href="https://win-terminal-hebrew-118.base44.app/downloads/Microsoft.WindowsTerminal_1.18.10301.0_8wekyb3d8bbwe.msixbundle" target="_blank">הורדה ישירה →</a>
+
+        <hr class="section-divider">
+
+        <!-- Integrations -->
+        <h2>אינטגרציות נפוצות</h2>
+
+        <h3>Claude in Chrome <span class="tag tag-recommended">מומלץ</span></h3>
+        <ul>
+            <li>תוסף Chrome שמאפשר ל-Claude Code לשלוט בדפדפן</li>
+            <li>גלישה, מילוי טפסים, אוטומציה</li>
+            <li>בונים את זה ביחד בפגישה</li>
+        </ul>
+        <a class="link-btn" href="https://chromewebstore.google.com/detail/claude-in-chrome" target="_blank">התקנת התוסף →</a>
+
+        <h3>Gmail + Google Calendar</h3>
+        <ul>
+            <li>צריך Google Cloud project + OAuth</li>
+            <li>בונים את זה ביחד בפגישה</li>
+        </ul>
+
+        <h3>WhatsApp <span class="tag tag-optional">אופציונלי</span></h3>
+        <ul>
+            <li>צריך Green API או WAHA</li>
+            <li>הגדרה פשוטה יחסית</li>
+        </ul>
+
+        <hr class="section-divider">
+
+        <!-- What you don't need -->
+        <h2>מה לא צריך</h2>
+        <p class="no-need">
+            <span>✕</span> לא צריך לדעת לתכנת<br>
+            <span>✕</span> לא צריך מחשב חזק במיוחד<br>
+            <span>✕</span> לא צריך שרתים<br>
+            <span>✕</span> לא צריך ידע קודם ב-AI
+        </p>
+
+        <hr class="section-divider">
+
+        <!-- Troubleshooting -->
+        <h2>בעיות נפוצות</h2>
+
+        <h3>"ההתקנה נכשלה"</h3>
+        <ul>
+            <li>לבדוק חיבור אינטרנט</li>
+            <li>Windows: לוודא שרצים PowerShell כמנהל</li>
+            <li>Mac/Linux: לנסות שוב עם sudo</li>
+        </ul>
+
+        <h3>"לא מתחבר לחשבון"</h3>
+        <ul>
+            <li>לוודא מנוי Claude פעיל</li>
+            <li>לנסות להתנתק ולהתחבר שוב</li>
+            <li>לבדוק שהדפדפן נפתח</li>
+        </ul>
+
+        <h3>"איטי מדי"</h3>
+        <ul>
+            <li>לבדוק מהירות אינטרנט</li>
+            <li>לשדרג ל-Max אם ב-Pro</li>
+            <li>לצמצם גודל קבצים</li>
+        </ul>
+
+        <hr class="section-divider">
+
+        <!-- Pre-meeting checklist -->
+        <h2>לפני הפגישה</h2>
+
+        <h3><span class="tag tag-required">חובה</span></h3>
+        <ul class="checklist">
+            <li>מנוי Claude פעיל (לפחות Pro)</li>
+            <li>מחשב Mac / Linux / Windows מוכן</li>
+            <li>חיבור אינטרנט יציב</li>
+            <li>Windows: Git Bash מותקן</li>
+        </ul>
+
+        <h3><span class="tag tag-recommended">מומלץ</span></h3>
+        <ul class="checklist">
+            <li>Node.js (<a href="https://nodejs.org" target="_blank">nodejs.org</a> — LTS) — להרצת סקריפטים ו-skills</li>
+            <li>Python (<a href="https://python.org" target="_blank">python.org</a>) — להרצת סקריפטים ו-skills</li>
+            <li>Chrome + תוסף Claude in Chrome (לאוטומציית דפדפן)</li>
+            <li>חשבון Gmail (אם רוצים אינטגרציה)</li>
+            <li>use case ספציפי שרוצים לפתור</li>
+        </ul>
+
+        <div class="footer">
+            <div class="brand" style="margin-bottom: 12px;">AVIZ</div>
+            <p>אביץ הארכיטקט — ייעוץ והטמעת AI</p>
+            <p style="margin-top: 8px;"><a href="https://linktr.ee/aviz85" target="_blank">linktr.ee/aviz85</a></p>
+        </div>
+    </div>
+</body>
+</html>
